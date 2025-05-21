@@ -269,6 +269,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 0.5rem;
     margin-bottom: 1rem;
 }
 
@@ -278,18 +279,50 @@ body {
     color: var(--primary-color);
 }
 
+.store-buttons {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-direction: row;
+}
+
 .steam-link {
     background: #171a21;
     color: white;
     text-decoration: none;
-    padding: 0.5rem 1rem;
+    padding: 0.4rem 1rem;
     border-radius: 5px;
     font-weight: 500;
     transition: opacity 0.2s;
+    white-space: nowrap;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
 }
 
 .steam-link:hover {
     opacity: 0.9;
+}
+
+.steam-link.price-standard,
+.steam-link.price-budget,
+.steam-link.price-premium {
+    margin-right: 0;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.steam-link.price-standard {
+    background: #FFA726;
+}
+
+.steam-link.price-budget {
+    background: #4CAF50;
+}
+
+.steam-link.price-premium {
+    background: #EF5350;
 }
 
 .game-tags {
@@ -499,13 +532,34 @@ body {
 
     .title-row {
         flex-direction: column;
+        align-items: center;
+        text-align: center;
         gap: 1rem;
     }
 
-    .steam-link {
-        margin-top: 1rem;
+    .store-buttons {
+        flex-direction: column;
         width: 100%;
-        text-align: center;
+        max-width: 280px;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .steam-link {
+        width: 100%;
+        justify-content: center;
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+    }
+
+    .steam-link.price-standard {
+        order: -1;
+        margin-top: 0;
+    }
+
+    .steam-link:not(.price-standard) {
+        margin-top: 0.5rem;
     }
 
     .search-controls {
@@ -576,4 +630,34 @@ body {
     width: 100%;
     height: 100%;
     border: none;
+}
+
+.game-price {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin: 1rem 0;
+    color: white;
+}
+
+.price-budget {
+    background-color: #4CAF50;  /* Green for budget prices */
+}
+
+.price-standard {
+    background-color: #FFA726;  /* Orange for standard prices */
+}
+
+.price-premium {
+    background-color: #EF5350;  /* Red for premium prices */
+}
+
+@media (max-width: 768px) {
+    .game-price {
+        font-size: 1.1rem;
+        padding: 0.4rem 0.8rem;
+        margin: 0.5rem 0;
+    }
 }
