@@ -17,11 +17,18 @@
     <div class="hero">
         <h1>Game Reviews</h1>
         <p>Detailed game reports with critic reviews and analysis</p>
+        <div class="search-controls">
+            <input type="text" id="search-input" placeholder="Search games...">
+            <select id="sort-select">
+                <option value="alphabetical">Sort Alphabetically</option>
+                <option value="score">Sort by Score</option>
+            </select>
+        </div>
     </div>
 
     <div class="container">
-        <div class="game-grid">
-            <a href="roadcraft.html" class="game-card">
+        <div class="game-grid" id="game-grid">
+            <a href="roadcraft.html" class="game-card" data-title="RoadCraft" data-score="84">
                 <img src="./assets/roadcraft-icon(tall).png" alt="RoadCraft">
                 <div class="game-card-content">
                     <h2>RoadCraft</h2>
@@ -35,5 +42,41 @@
             <!-- More game cards will be added here -->
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const gameGrid = document.getElementById('game-grid');
+            const searchInput = document.getElementById('search-input');
+            const sortSelect = document.getElementById('sort-select');
+
+            function filterGames() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const cards = gameGrid.querySelectorAll('.game-card');
+
+                cards.forEach(card => {
+                    const title = card.getAttribute('data-title').toLowerCase();
+                    card.style.display = title.includes(searchTerm) ? 'block' : 'none';
+                });
+            }
+
+            function sortGames() {
+                const cards = Array.from(gameGrid.querySelectorAll('.game-card'));
+                const sortType = sortSelect.value;
+
+                cards.sort((a, b) => {
+                    if (sortType === 'alphabetical') {
+                        return a.getAttribute('data-title').localeCompare(b.getAttribute('data-title'));
+                    } else {
+                        return parseInt(b.getAttribute('data-score')) - parseInt(a.getAttribute('data-score'));
+                    }
+                });
+
+                cards.forEach(card => gameGrid.appendChild(card));
+            }
+
+            searchInput.addEventListener('input', filterGames);
+            sortSelect.addEventListener('change', sortGames);
+        });
+    </script>
 </body>
 </html>
