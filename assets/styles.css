@@ -514,7 +514,12 @@ body {
         max-width: 400px;
     }
 
-    #search-input, #sort-select {
+    #search-input {
+        width: 87%;
+        align-items: center;
+    }
+
+    #sort-select {
         width: 100%;
     }
 
