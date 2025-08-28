@@ -16,7 +16,7 @@
 
     <div class="hero">
         <h1>Game Reviews</h1>
-        <p>Detailed game reports with critic reviews and analysis</p>
+        <p>Search for detailed reports with critic reviews and analysis</p>
         <div class="search-controls">
             <input type="text" id="search-input" placeholder="Search games...">
             <select id="sort-select">
@@ -50,8 +50,19 @@
                     </div>
                 </div>
             </a>
-            <!-- More game cards will be added here -->
+            <a href="no-mans-sky.html" class="game-card" data-title="No Man's Sky" data-score="92">
+                <img src="https://cdn2.steamgriddb.com/icon_thumb/2f2b28d87f6cd2b2fdc1c8e0a0e4d8e1.png" alt="No Man's Sky">
+                <div class="game-card-content">
+                    <h2>No Man's Sky</h2>
+                    <div class="game-card-score">92%</div>
+                    <div class="game-card-tags">
+                        <span class="tag">Exploration</span>
+                        <span class="tag">Multiplayer</span>
+                    </div>
+                </div>
+            </a>
         </div>
+        <div id="no-results">No results found</div>
     </div>
 
     <script>
@@ -59,22 +70,39 @@
             const gameGrid = document.getElementById('game-grid');
             const searchInput = document.getElementById('search-input');
             const sortSelect = document.getElementById('sort-select');
+            const noResults = document.getElementById('no-results');
+            const cards = Array.from(gameGrid.querySelectorAll('.game-card'));
 
             function filterGames() {
                 const searchTerm = searchInput.value.toLowerCase();
-                const cards = gameGrid.querySelectorAll('.game-card');
+                let resultsFound = false;
 
                 cards.forEach(card => {
                     const title = card.getAttribute('data-title').toLowerCase();
-                    card.style.display = title.includes(searchTerm) ? 'block' : 'none';
+                    if (title.includes(searchTerm) && searchTerm.trim() !== "") {
+                        card.style.display = 'block';
+                        resultsFound = true;
+                    } else {
+                        card.style.display = 'none';
+                    }
                 });
+
+                // Show/hide "no results" message
+                if (searchTerm.trim() === "") {
+                    noResults.style.display = "none";
+                    cards.forEach(card => card.style.display = 'none');
+                } else {
+                    noResults.style.display = resultsFound ? "none" : "block";
+                }
+
+                if (resultsFound) sortGames();
             }
 
             function sortGames() {
-                const cards = Array.from(gameGrid.querySelectorAll('.game-card'));
                 const sortType = sortSelect.value;
+                const visibleCards = cards.filter(card => card.style.display === 'block');
 
-                cards.sort((a, b) => {
+                visibleCards.sort((a, b) => {
                     if (sortType === 'alphabetical') {
                         return a.getAttribute('data-title').localeCompare(b.getAttribute('data-title'));
                     } else {
@@ -82,11 +110,23 @@
                     }
                 });
 
-                cards.forEach(card => gameGrid.appendChild(card));
+                visibleCards.forEach(card => gameGrid.appendChild(card));
             }
 
+            // Search on typing
             searchInput.addEventListener('input', filterGames);
+
+            // Search when pressing Enter
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    filterGames();
+                }
+            });
+
             sortSelect.addEventListener('change', sortGames);
+
+            // Hide all cards by default
+            cards.forEach(card => card.style.display = 'none');
         });
     </script>
 </body>
